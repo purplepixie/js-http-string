@@ -77,6 +77,96 @@ In this example _s_ will contain:
 a=b&c=d
 ```
 
+# Slightly More Complex Example
+
+**Use case:** We want to build a GET URL containing various bits of data, we have two JSON objects one containing the call-specific data and another containing the session values we must pass with the call. We also wish to add a further incremental value to the call to avoid cacheing.
+
+```
+// The JSON object containing data for the call
+var callData = {
+    'action': 'update', 'id': 123, 'telephone': '555-0123'
+};
+
+// The JSON object containing the session values
+var sessionData = {
+    'sessionid': 'abcdef12345'
+};
+
+// The base URL to call
+var baseURL = 'http://example.com/api/';
+
+// Our incremental value
+var increment = 456;
+
+// Create a js-http-string object
+var x = new JS_HTTP_STRING();
+
+// Load the call JSON
+x.json(callData);
+
+// Load the session values (note if the keys were the same this would overwrite)
+x.json(sessionData);
+
+// Set our increment (same rule about the keys)
+x.set('increment',increment);
+
+// Generate the query string
+var queryString = x.string();
+
+// Finalise the URI
+var uri = baseURL + '?' + queryString;
+```
+
+Note that a shorthand could have been used to load the data into the js-http-string object:
+
+```
+// Create a js-http-string object
+var x = new JS_HTTP_STRING();
+
+// Load the data
+x.json(callData).json(sessionData).set('increment',increment);
+```
+
+And in fact the whole thing could be simplified into one line to load the data and generate the query string.
+
+```
+var queryString = new JS_HTTP_STRING().json(callData).json(sessionData).set('increment',increment);
+```
+
 # More Examples
 
 See the shipped demo.html for more examples including anonymous use of the class.
+
+# Code Documentation
+
+## set(key,value)
+
+Sets a key/value pair in the data store. If key exists the value is updated otherwise the key and value and inserted. Returns this.
+
+## json(obj)
+
+Load a JSON object as key/values into the data store (uses _set()_ to actually store data so will update and append). Returns this.
+
+## string()
+
+Returns the URI-encoded formatted string of the key/value sets in the data store in the form: URI-encoded key = URI-encoded value with items seperated by &.
+
+## toString()
+
+Wrapper for _string()_
+
+## reset()
+
+Reset the data store (clear all key/value pairs). Returns this.
+
+## length()
+
+Returns the length (int) of the store.
+
+## unset(key)
+
+Unset (clear) a value held against this key (delete key and value). Returns this.
+
+## contains(key)
+
+Returns a boolean indicating if the given key is stored in the data store.
