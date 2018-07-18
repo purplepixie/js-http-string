@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>js-http-string Demo</title>
+    <script type="text/javascript" src="js-http-string.js"></script>
+</head>
+<body>
+    <h1>js-http-string Demo</h1>
+
+    <script type="text/javascript">
+
+    var demo = new JS_HTTP_STRING();
+    demo.set("firstWord","hello");
+    demo.set("secondWord","world");
+    document.write(demo.string());
+    document.write("<br /><br />");
+
+    demo = new JS_HTTP_STRING();
+    var data = {
+            "firstWord": "hello",
+            "secondWord": "world"
+    };
+    demo.json(data);
+    document.write(demo.string());
+    document.write("<br /><br />");
+
+    demo = new JS_HTTP_STRING();
+    var data = {
+            "email": "bob@example.com",
+            "chars": "Goodbye, cruel world! Oh & before I forget + is my favourite operator, or is it?"
+    };
+    demo.json(data);
+    document.write(demo.string());
+    document.write("<br /><br />");
+
+    demo = new JS_HTTP_STRING();
+    var data = {
+            "firstWord": "hello",
+            "secondWord": "world"
+    };
+    demo.json(data);
+    document.write(demo.string());
+    document.write("<br />");
+    demo.set("firstWord","goodbye");
+    document.write(demo.string());
+    document.write("<br />");
+    demo.unset("firstWord");
+    document.write(demo.string());
+    document.write("<br /><br />");
+
+    // Lots of stuff chained together without a temp variable using set
+    document.write(
+        new JS_HTTP_STRING().set("we","can").set("chain","functions").set("together","where").set("they","return").set("this","reference").string()
+    );
+    document.write("<br /><br />");
+
+    // JSON examples without using a temporary variable for the instance
+    var example = {
+        "one": 1,
+        "two": 2,
+        "three": 3
+    };
+    document.write(
+        new JS_HTTP_STRING().json(example).string()
+    );
+    document.write("<br /><br />");
+
+    document.write(
+        new JS_HTTP_STRING().json({"one":1,"two":2,"three":3}).string()
+    );
+
+    document.write("<br /><br />");
+
+    // Using JSON without a temporary instance and putting string into variable (Angular JS body use case)
+    var somedata = {
+        "one": 1,
+        "two": 2,
+        "three": 3
+    };
+    var body = new JS_HTTP_STRING().json(somedata).string();
+    document.write(body);
+    document.write("<br /><br />");
+    </script>
+</body>
